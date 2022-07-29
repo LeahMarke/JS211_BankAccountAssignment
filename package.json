@@ -1,0 +1,22 @@
+{
+  "name": "js211_bankaccountassignment",
+  "version": "1.0.0",
+  "description": "Today students will apply their knowledge of object-oriented programming to create two classes: one that can be used to represent a bank account and another to represent the transactions the bank account holds.",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha --no-timeouts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeahMarke/JS211_BankAccountAssignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeahMarke/JS211_BankAccountAssignment/issues"
+  },
+  "homepage": "https://github.com/LeahMarke/JS211_BankAccountAssignment#readme",
+  "dependencies": {
+    "mocha": "^10.0.0"
+  }
+}
