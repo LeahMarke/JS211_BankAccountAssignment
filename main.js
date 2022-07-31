@@ -1,7 +1,20 @@
 "use strict";
+
+const assert = require("assert");
+const { normalize } = require("path");
+const readline = require("readline");
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+// const readline = require('readline');
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
 // BankAccount class - This class represents a bank account.
 
-//
 class BankAccount {
   constructor(accountNumber, owner) {
     this.accountNumber = accountNumber;
@@ -11,10 +24,10 @@ class BankAccount {
   // This method does not take any input, and returns the current balance on the account. The balance is computed by summing up the amounts in the transactions array.
   balance() {
     let sum = 0;
-    for (const value of arr) {
-      sum += value;
+    for (let i = 0; i < this.transactions.length; i++) {
+      sum += this.transactions[i].amount;
     }
-    console.log(sum);
+    return sum;
   }
   //This method takes in a single input, the deposit amount. This method should create a new transaction representing the deposit, and add it to the transactions array.You should not be able to deposit a negative amount
   deposit(dep) {
@@ -44,25 +57,43 @@ class Transaction {
     console.log(`${this.date}: ${this.payee} ${this.amount}`);
   }
 }
-const payee1Transaction1 = new Transaction(25, "Bill");
-console.log(payee1Transaction1);
+// const payee1Transaction1 = new Transaction(25, "Bill");
+// console.log(payee1Transaction1);
 
 // TESTS
-describe("#testing account creation", function () {
-  it("should create a new account correctly", function () {
-    let acct1 = new BankAccount("xx4432", "James Doe");
-    assert.equal(acct1.owner, "James Doe");
-    assert.equal(acct1.accountNumber, "xx4432");
-    assert.equal(acct1.transactions.length, 0);
+if (typeof describe === "function") {
+  describe("#testing account creation", () => {
+    it("should create a new account correctly", () => {
+      let acct1 = new BankAccount("xx4432", "James Doe");
+      assert.equal(acct1.owner, "James Doe");
+      assert.equal(acct1.accountNumber, "xx4432");
+      assert.equal(acct1.transactions.length, 0);
+      assert.equal(acct1.balance(), 0);
+    });
   });
-});
-
-describe("#Testing transaction creation", function () {
-  it("Should create a transaction correctly for deposit", function () {
-    let t1 = new Transaction(30, "Deposit");
-    assert.equal(t1.amount, 30);
-    assert.equal(t1.payee, "Deposit");
+  describe("#testing account creation", () => {
+    it("should create a new account correctly", () => {
+      let acct1 = new BankAccount("xx4432", "James Doe");
+      assert.equal(acct1.owner, "James Doe");
+      assert.equal(acct1.accountNumber, "xx4432");
+      assert.equal(acct1.transactions.length, 0);
+      assert.equal(acct1.balance(), 0);
+    });
+  });
+  describe("#Testing transaction creation", () => {
+    it("Should create a transaction correctly for deposit", () => {
+      let t1 = new Transaction(30, "Deposit");
+      assert.equal(t1.amount, 30);
+      assert.equal(t1.payee, "Deposit");
+      assert.notEqual(t1.date, undefined);
+      assert.notEqual(t1.date, null);
+    });
+  });
+  it("Should create a transaction correctly for charge", () => {
+    let t1 = new Transaction(-34.45, "Target");
+    assert.equal(t1.amount, -34.45);
+    assert.equal(t1.payee, "Target");
     assert.notEqual(t1.date, undefined);
     assert.notEqual(t1.date, null);
   });
-});
+}
