@@ -1,3 +1,4 @@
+"use strict";
 // BankAccount class - This class represents a bank account.
 
 //
@@ -33,12 +34,11 @@ class BankAccount {
 
 class Transaction {
   constructor(amount, payee) {
-    // set date to current date automatically
-    this.date = setDate();
-    // Positive amounts are money going into the account (deposit, refund). Negative amounts are money coming out of the account (a charge or debit).
     this.amount = amount;
-
     this.payee = payee;
+    // set date to current date automatically
+    this.date = new Date();
+    // Positive amounts are money going into the account (deposit, refund). Negative amounts are money coming out of the account (a charge or debit).
   }
   method() {
     console.log(`${this.date}: ${this.payee} ${this.amount}`);
@@ -46,3 +46,23 @@ class Transaction {
 }
 const payee1Transaction1 = new Transaction(25, "Bill");
 console.log(payee1Transaction1);
+
+// TESTS
+describe("#testing account creation", function () {
+  it("should create a new account correctly", function () {
+    let acct1 = new BankAccount("xx4432", "James Doe");
+    assert.equal(acct1.owner, "James Doe");
+    assert.equal(acct1.accountNumber, "xx4432");
+    assert.equal(acct1.transactions.length, 0);
+  });
+});
+
+describe("#Testing transaction creation", function () {
+  it("Should create a transaction correctly for deposit", function () {
+    let t1 = new Transaction(30, "Deposit");
+    assert.equal(t1.amount, 30);
+    assert.equal(t1.payee, "Deposit");
+    assert.notEqual(t1.date, undefined);
+    assert.notEqual(t1.date, null);
+  });
+});
