@@ -30,16 +30,19 @@ class BankAccount {
     return sum;
   }
   //This method takes in a single input, the deposit amount. This method should create a new transaction representing the deposit, and add it to the transactions array.You should not be able to deposit a negative amount
-  deposit(dep) {
-    if (dep > 0) {
-      this.transactions.push(dep);
-    } else {
-      console.log("Minimum deposit = $1");
+  deposit(amt) {
+    if (amt > 0) {
+      let depositTransaction = new Transaction(amt, "Deposit");
+      this.transactions.push(depositTransaction);
     }
   }
   //This method takes in the payee and amount, creates a new transaction with the payee and amount, and adds the transaction to the transaction array.You should not be able to charge an amount that would make your balance dip below 0
-  charge(payee, amount) {
-    this.transactions.push(amount);
+  charge(payee, amt) {
+    let currentBalance = this.balance();
+    if (amt <= currentBalance) {
+      let chargeTransaction = new Transaction(-amt, payee);
+      this.transactions.push(chargeTransaction);
+    }
   }
 }
 
@@ -71,15 +74,37 @@ if (typeof describe === "function") {
       assert.equal(acct1.balance(), 0);
     });
   });
-  describe("#testing account creation", () => {
+  describe("#testing account balance", () => {
     it("should create a new account correctly", () => {
       let acct1 = new BankAccount("xx4432", "James Doe");
-      assert.equal(acct1.owner, "James Doe");
-      assert.equal(acct1.accountNumber, "xx4432");
-      assert.equal(acct1.transactions.length, 0);
+      assert.equal(acct1.balance(), 0);
+      acct1.deposit(100);
+      assert.equal(acct1.balance(), 100);
+      acct1.charge("Target", 10);
+      assert.equal(acct1.balance(), 90);
+    });
+    it("should not allow negative deposit", () => {
+      let acct1 = new BankAccount("xx4432", "James Doe");
+      assert.equal(acct1.balance(), 0);
+      acct1.deposit(100);
+      assert.equal(acct1.balance(), 100);
+      acct1.deposit(-30);
+      assert.equal(acct1.balance(), 100);
+    });
+    it("should not allow charging to overdraft", () => {
+      let acct1 = new BankAccount("xx4432", "James Doe");
+      assert.equal(acct1.balance(), 0);
+      acct1.charge("Target", 30);
       assert.equal(acct1.balance(), 0);
     });
+    it("should allow a refund", () => {
+      let acct1 = new BankAccount("xx4432", "James Doe");
+      assert.equal(acct1.balance(), 0);
+      acct1.charge("Target", -30);
+      assert.equal(acct1.balance(), 30);
+    });
   });
+
   describe("#Testing transaction creation", () => {
     it("Should create a transaction correctly for deposit", () => {
       let t1 = new Transaction(30, "Deposit");
